@@ -1,0 +1,4 @@
+{
+  "extends": ["standard"],
+  "plugins": ["sort-imports-es6-autofix"],
+}
