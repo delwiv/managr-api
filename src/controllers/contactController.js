@@ -10,6 +10,10 @@ export default {
         Object.assign(query, {
           mois_contact: q.replace('month:', '')
         })
+      } else if (q.match(/v:.+/)) {
+        Object.assign(query, {
+          ville: new RegExp(q.replace('v:', ''), 'gi')
+        })
       } else {
         const regex = new RegExp(q, 'i')
         Object.assign(query, {
@@ -48,7 +52,11 @@ export default {
     }
 
     const [contacts, count] = await Promise.all([
-      ContactModel.find(query, 'checked departement ville _id nom responsable mail envoi mois vu', params),
+      ContactModel.find(
+        query,
+        'checked departement ville _id nom responsable mail envoi_mail mois_contact vu_le',
+        params
+      ),
       ContactModel.count(query)
     ])
     return res.json({ contacts, count })
