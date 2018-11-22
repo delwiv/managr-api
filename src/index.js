@@ -5,13 +5,12 @@ import morgan from 'morgan'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 
-const DB = 'mongodb://localhost/managr'
-const PORT = 3038
+import { DB_URL, PORT } from './config.json'
 
 mongoose.connect(
-  DB,
+  DB_URL,
   () => {
-    console.log(`connected to ${DB}`)
+    console.log(`connected to ${DB_URL}`)
   }
 )
 
