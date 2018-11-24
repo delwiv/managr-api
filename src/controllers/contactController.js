@@ -52,11 +52,7 @@ export default {
     }
 
     const [contacts, count] = await Promise.all([
-      ContactModel.find(
-        query,
-        'checked departement ville _id nom responsable mail envoi_mail mois_contact vu_le',
-        params
-      ),
+      ContactModel.find(query, 'departement ville _id nom responsable mail envoi_mail mois_contact vu_le site', params),
       ContactModel.count(query)
     ])
     return res.json({ contacts, count })

@@ -26,7 +26,8 @@ const contactSchema = new Schema(
     tel_pro: String,
     tel3: String,
     ville: String,
-    vu_le: String
+    vu_le: String,
+    site: String
   },
   {
     strict: false
