@@ -47,7 +47,8 @@ export default {
     const params = {
       sort: {
         departement: 1,
-        ville: 1
+        ville: 1,
+        nom: 1
       }
     }
 
