@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "managr-api",
+      "script": "yarn",
+      "args": "serve",
+      "instances": "1",
+      "exec_mode": "fork"
+    }
+  ]
+}
