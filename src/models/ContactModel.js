@@ -9,7 +9,7 @@ const contactSchema = new Schema(
     cible: String,
     cp: String,
     date_cd: String,
-    departement: String,
+    departement: Number,
     envoi_mail: String,
     id: String,
     mail: String,
@@ -33,5 +33,25 @@ const contactSchema = new Schema(
     strict: false
   }
 )
+
+contactSchema.statics = {
+  fixDocs () {
+    return new Promise((resolve, reject) => {
+      let fixed = 0
+      const cursor = this.find({}).cursor()
+      cursor.on('data', async doc => {
+        try {
+          doc.departement = +doc.departement
+          await doc.save()
+          ++fixed
+          console.log('fixed: ', fixed)
+        } catch (error) {
+          console.error(error)
+        }
+      })
+      cursor.on('end', () => resolve(fixed))
+    })
+  }
+}
 
 export default mongoose.model('contact', contactSchema)

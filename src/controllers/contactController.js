@@ -78,7 +78,7 @@ export default {
   },
 
   create: function (req, res) {
-    var contact = new ContactModel(req.body)
+    var contact = new ContactModel({ ...req.body, departement: +req.body.departement })
 
     contact.save(function (err, contact) {
       if (err) {
