@@ -3,7 +3,7 @@
     {
       "name": "managr-api",
       "script": "yarn",
-      "args": "serve",
+      "args": "start",
       "instances": "1",
       "exec_mode": "fork"
     }
