@@ -56,7 +56,8 @@ export default {
       ContactModel.find(query, 'departement ville _id nom responsable mail envoi_mail mois_contact vu_le site', params),
       ContactModel.count(query)
     ])
-    return res.json({ contacts, count })
+
+    return res.json({ contacts: contacts.sort((a, b) => a.departement - b.departement), count })
   },
 
   show: function (req, res) {
