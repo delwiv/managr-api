@@ -27,15 +27,16 @@ const contactSchema = new Schema(
     tel3: String,
     ville: String,
     vu_le: String,
-    site: String
+    site: String,
+    sendMailStatus: {},
   },
   {
-    strict: false
+    strict: false,
   }
 )
 
 contactSchema.statics = {
-  fixDocs () {
+  fixDocs() {
     return new Promise((resolve, reject) => {
       let fixed = 0
       const cursor = this.find({}).cursor()
@@ -51,7 +52,7 @@ contactSchema.statics = {
       })
       cursor.on('end', () => resolve(fixed))
     })
-  }
+  },
 }
 
 export default mongoose.model('contact', contactSchema)

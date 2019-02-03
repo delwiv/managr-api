@@ -1,0 +1,77 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3-column layout</title>
+
+</head>
+
+<body>
+<p>Bonjour.</p>
+<p>Trois groupes à découvrir !</p>
+<p><strong>Swing Of France</strong> / 10 ans / <strong>500 concerts</strong></p>
+<p><strong>Antoine Hervier Trio</strong> / 20 ans / <strong>1000 concerts</strong></p>
+<p><strong>BOHÈME</strong> / 3 ans / <strong>100 concerts</strong></p>
+<p>Cordialement.   Frédéric Robert   /   06.10.16.83.02</p>
+
+<!-- 
+/*##############################################*/
+
+3 column
+
+/*##############################################*/
+-->
+
+<div class="block">
+  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="table-layout: fixed;" align="center">
+    <tr>
+      <td><table cellpadding="0" cellspacing="0" border="0" width="600" align="center" class="fluid-table">
+          <tr>
+            <td><table width="200" align="left" border="0" cellpadding="0" cellspacing="0" class="fluid-table">
+                <tbody>
+                  <!-- image -->
+                  <tr>
+                    <td align="center"><a href="http://swingoffrance.com/"><img src="https://static-delwiv.ngrok.io/sof.png" alt="#image" class="fluid-image" style="display:block; border:none; outline:none; text-decoration:none; color:#ffffff; font-size:16px; text-align:center; font-family: Arial, Verdana, sans-serif;" border="0"></a></td>
+                  </tr>
+                  <!-- image -->
+                </tbody>
+              </table>
+              
+              <!-- End of first column --> 
+              
+              <!--[if mso]></td><td valign="top"><![endif]--> 
+              
+              <!-- Start of second column -->
+              
+              <table width="200" align="left" border="0" cellpadding="0" cellspacing="0" class="fluid-table">
+                <tbody>
+                  <!-- image -->
+                  <tr>
+                    <td align="center"><a href="http://antoinehervier.com"><img src="https://static-delwiv.ngrok.io/aht.png" alt="#image" border="0" style="display:block; border:none; outline:none; text-decoration:none; color:#ffffff; font-size:16px; text-align:center; font-family: Arial, Verdana, sans-serif;" class="fluid-image"></a></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <!-- End of second column --> 
+              
+              <!--[if mso]></td><td valign="top"><![endif]--> 
+              
+              <!-- Start of third column -->
+              
+              <table width="200" align="left" border="0" cellpadding="0" cellspacing="0" class="fluid-table">
+                <tbody>
+                  <tr>
+                    <td align="center"><a href="https://boheme-jazz.com/#/"><img src="https://static-delwiv.ngrok.io/boh.png" alt="#image" border="0" style="display:block; border:none; outline:none; text-decoration:none; color:#ffffff; font-size:16px; text-align:center; font-family: Arial, Verdana, sans-serif;" class="fluid-image"></a></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <!-- End of third column --></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

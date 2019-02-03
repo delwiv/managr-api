@@ -12,22 +12,23 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
+    "date-fns": "^1.30.1",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
+    "googleapis": "^37.1.0",
+    "kue": "^0.11.6",
     "mongoose": "^5.3.4",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^7.0.1",
-    "eslint-plugin-promise": "^4.0.1",
+    "babel-eslint": "^10.0.1",
     "eslint-plugin-sort-imports-es6-autofix": "^0.3.0",
-    "eslint-plugin-standard": "^4.0.0",
-    "nodemon": "^1.18.5"
+    "nodemon": "^1.18.9",
+    "prettier": "^1.16.3"
   }
 }

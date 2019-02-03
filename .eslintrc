@@ -1,4 +1,17 @@
 {
-  "extends": ["standard"],
+  "extends": ["eslint:recommended"],
+  "parser": "babel-eslint",
   "plugins": ["sort-imports-es6-autofix"],
+  "rules": {
+    "no-console": 0,
+    "curly": ["error", "multi-or-nest"],
+    "sort-imports-es6-autofix/sort-imports-es6": [
+      "error",
+      {
+        "ignoreCase": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
+      }
+    ],
+  }
 }
