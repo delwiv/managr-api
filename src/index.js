@@ -8,7 +8,7 @@ import morgan from 'morgan'
 
 import { DB_URL, PORT } from './config.json'
 
-mongoose.connect(DB_URL, () => {
+mongoose.connect(DB_URL, { useNewUrlParser: true }, () => {
   console.log(`connected to ${DB_URL}`)
 })
 
@@ -17,7 +17,7 @@ const app = express()
 app.use(morgan('tiny'))
 app.use(cors())
 
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use('/contacts', contacts)

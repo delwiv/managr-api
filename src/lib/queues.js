@@ -21,7 +21,7 @@ jobs.on('error', async err => {
   await sendMail({
     body: err.toString('utf8') + err.stack.toString('utf8'),
     subject: 'Massmail error happened',
-    to: 'delwiv@gmail.com',
+    to: 'delwiv@protonmail.com',
   })
 })
 
@@ -40,9 +40,10 @@ export const sendMails = async ({ emails, type, toRecontact }) => {
       await new Promise(resolve => setTimeout(resolve, 500))
     } catch (error) {
       console.error('errCreateJob', { error })
+      const errorMessage = error.message === 'Invalid to header' ? `Mauvaise adresse email : ${email}` : error.message
       await Contact.updateOne(
         { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
-        { sendMailStatus: { date: new Date(), status: `error=${error.message}` } }
+        { sendMailStatus: { date: new Date(), error: errorMessage } }
       )
     }
   }
@@ -57,16 +58,18 @@ jobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
       { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
       { sendMailStatus: { date: new Date(), status: 'sending' } }
     )
+    console.log({ email })
     // let lastTime = Date.now()
     console.log({ email, total })
     await sendMail({
       body: getBody(type),
       subject: `Jazz ${email}`,
-      to: 'delwiv@gmail.com',
+      to: `delwiv@protonmail.com`,
     })
+
     await Contact.updateOne(
       { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
-      { sendMailStatus: { date: new Date(), status: 'sent' }, mois_contact: +toRecontact }
+      { sendMailStatus: { date: new Date(), status: 'sent' }, mois_contact: toRecontact }
     )
     await redis.set(`${REDIS_KEY}.${uuid()}`, true)
     done()
@@ -74,7 +77,7 @@ jobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
     console.error('errCreateJob', { error })
     await Contact.updateOne(
       { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
-      { sendMailStatus: { date: new Date(), status: `error=${error.message}` } }
+      { sendMailStatus: { date: new Date(), error: error.message } }
     )
     done(error)
   }

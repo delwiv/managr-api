@@ -3,3 +3,5 @@ data.json
 .env
 src/config.json
 dist
+mongo-seed
+.tern-port

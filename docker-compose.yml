@@ -1,0 +1,26 @@
+version: "3.4"
+
+services:
+  mongo:
+    image: 'bitnami/mongodb:latest'
+    ports:
+      - "27017:27017"
+    volumes:
+      - /var/data/mongodb
+    networks:
+      - managr-mongo
+
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+
+  mongo-seed:
+    build: ./mongo-seed
+    depends_on:
+      - mongo
+
+networks: 
+  managr-mongo:
