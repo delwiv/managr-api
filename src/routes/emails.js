@@ -11,10 +11,11 @@ router.post('/', async (req, res) => {
     const { toRecontactDelay, emails, type } = req.body
     const today = new Date()
     const thisMonth = today.getMonth()
-    const toRecontact = today.getMonth(today.setMonth(thisMonth + toRecontactDelay))
+    const toRecontact = today.getMonth(today.setMonth(thisMonth + parseInt(toRecontactDelay)))
+    console.log({ thisMonth, toRecontact })
     await sendMails({
       toRecontact,
-      emails: emails.filter(e => e.match(emailRegex)),
+      emails: emails.filter(e => e.trim().match(emailRegex)),
       type: type || '4bands',
     })
     res.json({ status: 'queued', count: req.body.emails.length })

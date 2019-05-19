@@ -32,6 +32,7 @@ const contactSchema = new Schema(
   },
   {
     strict: false,
+    timestamps: true,
   }
 )
 

@@ -1,5 +1,7 @@
-import ContactModel from '../models/ContactModel.js'
 import { subDays } from 'date-fns'
+
+import ContactModel from '../models/ContactModel.js'
+import redis, { MAILCOUNT_KEY } from '../lib/redis'
 
 export default {
   list: async (req, res) => {
@@ -65,13 +67,18 @@ export default {
     const [contacts, count] = await Promise.all([
       ContactModel.find(
         query,
-        'departement ville _id nom responsable mail envoi_mail mois_contact vu_le site sendMailStatus',
+        'departement ville _id nom responsable mail envoi_mail mois_contact vu_le site sendMailStatus updatedAt',
         params
       ),
       ContactModel.countDocuments(query),
     ])
 
-    return res.json({ contacts: contacts.sort((a, b) => +a.departement - +b.departement), count })
+    const last24hours = await redis.find(`*${MAILCOUNT_KEY}.*`)
+    return res.json({
+      contacts: contacts.sort((a, b) => +a.departement - +b.departement),
+      count,
+      emailsSent: last24hours.length,
+    })
   },
 
   show: function(req, res) {
