@@ -9,6 +9,8 @@ const { writeFile } = promises
 const config = {
   DB_URL: process.env.DB_URL,
   PORT: process.env.PORT,
+  MAILCHIMP_API_KEY: process.env.MAILCHIMP_API_KEY,
+  MAILCHIMP_BASE_URL: process.env.MAILCHIMP_BASE_URL,
   months: [
     'Ignorer',
     'Janvier',
@@ -22,8 +24,8 @@ const config = {
     'Septembre',
     'Octobre',
     'Novembre',
-    'Décembre'
-  ]
+    'Décembre',
+  ],
 }
 const configure = async () => {
   await writeFile(join(__dirname, 'config.json'), JSON.stringify(config, null, 2))

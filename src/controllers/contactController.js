@@ -68,7 +68,7 @@ export default {
         'departement ville _id nom responsable mail envoi_mail mois_contact vu_le site sendMailStatus',
         params
       ),
-      ContactModel.count(query),
+      ContactModel.countDocuments(query),
     ])
 
     return res.json({ contacts: contacts.sort((a, b) => +a.departement - +b.departement), count })
