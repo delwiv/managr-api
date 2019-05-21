@@ -63,11 +63,11 @@ jobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
     // let lastTime = Date.now()
     console.log({ email, total })
     await sendMail({
+      subject: `${name} - Proposition spectacle`,
       body: getBody(type),
-      // subject : `${name} - Proposition spectacle`
-      subject: `${name} - Proposition Spectacle (${email})`,
-      //to: email.trim(),
-      to: `mailfredericrobert@gmail.com`,
+      to: email.trim(),
+      // subject: `${name} - Proposition Spectacle (${email})`,
+      // to: `mailfredericrobert@gmail.com`,
     })
 
     await Contact.updateOne(
