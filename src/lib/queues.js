@@ -11,7 +11,7 @@ import { sendMail } from './gmail'
 
 const getBody = type => fs.readFileSync(join(__dirname, `../mails/${type}.html`)).toString('utf8')
 
-const NB_PARALLEL_EMAILS = 1
+const NB_PARALLEL_EMAILS = 2
 const jobs = kue.createQueue()
 
 const JOB_DELAY = 1000 * 60 * 60 * 3 // 3h
