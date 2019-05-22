@@ -6,3 +6,4 @@ dist
 mongo-seed
 .tern-port
 credentials.json
+token.json
