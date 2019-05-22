@@ -27,20 +27,24 @@ jobs.on('error', async err => {
 
 export const sendMails = async ({ emails, type, toRecontact }) => {
   for (const email of emails) {
+    console.log({ email })
     try {
       const contact = await Contact.findOne({ $or: [{ mail: email }, { mail2: email }, { mail3: email }] })
+      console.log('name:', contact.nom)
       const job = jobs.create('sendMail', { email, type, total: emails.length, toRecontact, name: contact.nom }).save()
+      console.log('job created')
       await Contact.updateOne(
         { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
         { sendMailStatus: { date: new Date(), status: 'queued' } }
       )
+      console.log('updated mail queued')
       job.attempts(10).backoff({ type: 'exponential' })
       const last24hours = await redis.find(`*${MAILCOUNT_KEY}.*`)
       console.log({ last24hours: last24hours.length })
       if (last24hours.length >= 500) job.delay(JOB_DELAY)
       await new Promise(resolve => setTimeout(resolve, 500))
     } catch (error) {
-      console.error('errCreateJob', { error })
+      console.log(require('util').inspect('errCreateJob', { error }, true, 10, true))
       const errorMessage = error.message === 'Invalid to header' ? `Mauvaise adresse email : ${email}` : error.message
       await Contact.updateOne(
         { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
@@ -53,15 +57,14 @@ export const sendMails = async ({ emails, type, toRecontact }) => {
 // const getProgress = progress => Math.round(+progress * 100) / 100
 
 jobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
+  console.log('sendMail')
   const { name, email, total, type, toRecontact } = job.data
+  console.log({ name, email, total, type, toRecontact })
   try {
     await Contact.updateOne(
       { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
       { sendMailStatus: { date: new Date(), status: 'sending' } }
     )
-    console.log({ name, email })
-    // let lastTime = Date.now()
-    console.log({ email, total })
     await sendMail({
       subject: `${name} - Proposition spectacle`,
       body: getBody(type),
