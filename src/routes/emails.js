@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
     const today = new Date()
     const thisMonth = today.getMonth()
     const toRecontact = today.getMonth(today.setMonth(thisMonth + parseInt(toRecontactDelay)))
-    const mails = emails.filter(e => e.trim().match(emailRegex))
+    const mails = emails.filter(e => typeof e === 'string' && e.trim().match(emailRegex))
     console.log(require('util').inspect({ thisMonth, toRecontact, mails }, true, 10, true))
     await sendMails({
       toRecontact,
