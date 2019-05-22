@@ -103,7 +103,7 @@ export async function sendMail({ subject, body, to }) {
 
   // const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`
   const messageParts = [
-    `From: =?utf-8?B?${Buffer.from('Frédéric Robert').toString('base64')}?= <bohemejazz44@gmail.com>`,
+    `From: =?utf-8?B?${Buffer.from('Frédéric Robert').toString('base64')}?= mailfredericrobert@gmail.com>`,
     `To: ${to}`,
     'Content-Type: text/html; charset=utf-8',
     'MIME-Version: 1.0',
