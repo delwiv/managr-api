@@ -64,10 +64,12 @@ export default {
       },
     }
 
+    console.log({ params, query })
+
     const [contacts, count] = await Promise.all([
       ContactModel.find(
         query,
-        'departement ville _id nom responsable mail envoi_mail mois_contact vu_le site sendMailStatus updatedAt',
+        'departement ville _id nom responsable mail mail2 mail3 envoi_mail mois_contact vu_le site sendMailStatus updatedAt',
         params
       ),
       ContactModel.countDocuments(query),

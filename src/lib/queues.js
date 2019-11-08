@@ -12,11 +12,11 @@ import { sendMail } from './gmail'
 const getBody = type => fs.readFileSync(join(__dirname, `../mails/${type}.html`)).toString('utf8')
 
 const NB_PARALLEL_EMAILS = 2
-const jobs = kue.createQueue()
+const mailJobs = kue.createQueue()
 
 const JOB_DELAY = 1000 * 60 * 60 * 3 // 3h
 
-jobs.on('error', async err => {
+mailJobs.on('error', async err => {
   console.log(require('util').inspect({ err }, true, 10, true))
   await sendMail({
     body: err.toString('utf8') + err.stack.toString('utf8'),
@@ -30,21 +30,23 @@ export const sendMails = async ({ emails, type, toRecontact }) => {
     console.log({ email })
     try {
       const contact = await Contact.findOne({ $or: [{ mail: email }, { mail2: email }, { mail3: email }] })
-      console.log('name:', contact.nom)
-      const job = jobs.create('sendMail', { email, type, total: emails.length, toRecontact, name: contact.nom }).save()
-      console.log('job created')
+      const { mail, mail2, mail3 } = contact
+      const jobs = [mail, mail2, mail3]
+        .filter(m => !!m)
+        .map(m =>
+          mailJobs.create('sendMail', { email: m, type, total: emails.length, toRecontact, name: contact.nom }).save()
+        )
       await Contact.updateOne(
         { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
         { sendMailStatus: { date: new Date(), status: 'queued' } }
       )
-      console.log('updated mail queued')
-      job.attempts(10).backoff({ type: 'exponential' })
+      jobs.forEach(j => j.attempts(10).backoff({ type: 'exponential' }))
       const last24hours = await redis.find(`*${MAILCOUNT_KEY}.*`)
       console.log({ last24hours: last24hours.length })
-      if (last24hours.length >= 500) job.delay(JOB_DELAY)
+      if (last24hours.length >= 500) jobs.forEach(j => j.delay(JOB_DELAY))
       await new Promise(resolve => setTimeout(resolve, 500))
     } catch (error) {
-      console.log(require('util').inspect('errCreateJob', { error }, true, 10, true))
+      console.log(require('util').inspect({ error }, true, 10, true))
       const errorMessage = error.message === 'Invalid to header' ? `Mauvaise adresse email : ${email}` : error.message
       await Contact.updateOne(
         { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
@@ -56,8 +58,7 @@ export const sendMails = async ({ emails, type, toRecontact }) => {
 
 // const getProgress = progress => Math.round(+progress * 100) / 100
 
-jobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
-  console.log('sendMail')
+mailJobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
   const { name, email, total, type, toRecontact } = job.data
   console.log({ name, email, total, type, toRecontact })
   try {
@@ -70,7 +71,7 @@ jobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
       body: getBody(type),
       to: email.trim(),
       // subject: `${name} - Proposition Spectacle (${email})`,
-      // to: `mailfredericrobert@gmail.com`,
+      // to: `delwiv@protonmail.com`,
     })
 
     await Contact.updateOne(
@@ -84,7 +85,7 @@ jobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
     await redis.set(`${MAILCOUNT_KEY}.${uuid()}`, true)
     done()
   } catch (error) {
-    console.error('errCreateJob', { error })
+    console.error({ error })
     await Contact.updateOne(
       { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
       { sendMailStatus: { date: new Date(), error: error.message } }

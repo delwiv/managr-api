@@ -56,4 +56,6 @@ contactSchema.statics = {
   },
 }
 
-export default mongoose.model('contact', contactSchema)
+const model = mongoose.model('contact', contactSchema)
+
+export default model
