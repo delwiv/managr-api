@@ -51,6 +51,18 @@ export default {
             {
               notes: regex,
             },
+            {
+              cible: regex,
+            },
+            {
+              tel_perso: regex,
+            },
+            {
+              tel_pro: regex,
+            },
+            {
+              tel3: regex,
+            },
           ],
         })
       }
