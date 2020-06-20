@@ -5,8 +5,8 @@
   "scripts": {
     "configure": "babel-node --presets @babel/env src/configure.js",
     "build": "babel src --out-dir dist --copy-files",
-    "start": "yarn configure && node dist/index.js",
-    "dev": "yarn configure && babel-watch src/index.js"
+    "start": "npm run configure && node dist/index.js",
+    "dev": "npm run configure && babel-watch src/index.js"
   },
   "license": "MIT",
   "dependencies": {
