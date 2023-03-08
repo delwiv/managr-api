@@ -77,14 +77,16 @@ mailJobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
       to: email.trim(),
     })
 
-    await Contact.updateOne(
-      { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
-      {
-        sendMailStatus: { date: new Date(), status: 'sent' },
-        mois_contact: toRecontact + 1,
-        envoi_mail: format(new Date(), 'DD/MM/YY'),
-      }
-    )
+    if (toRecontact !== null) {
+      await Contact.updateOne(
+        { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
+        {
+          sendMailStatus: { date: new Date(), status: 'sent' },
+          mois_contact: toRecontact + 1,
+          envoi_mail: format(new Date(), 'DD/MM/YY'),
+        }
+      )
+    }
     await redis.set(`${MAILCOUNT_KEY}.${uuid()}`, true)
     done()
   } catch (error) {
