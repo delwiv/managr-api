@@ -1,6 +1,6 @@
 {
   "extends": ["eslint:recommended"],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "plugins": ["sort-imports-es6-autofix"],
   "globals": {
     "__dirname": true,
@@ -20,6 +20,6 @@
         "ignoreMemberSort": false,
         "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
       }
-    ],
+    ]
   }
 }
