@@ -1,8 +1,8 @@
 import fs from 'fs'
 import kue from 'kue'
 import uuid from 'uuid/v4'
-import { join } from 'path'
 import { format } from 'date-fns'
+import { join } from 'path'
 
 import Contact from '../models/ContactModel'
 import redis, { MAILCOUNT_KEY } from './redis'
@@ -62,16 +62,19 @@ mailJobs.process('sendMail', NB_PARALLEL_EMAILS, async (job, done) => {
   const { name, email, total, type, toRecontact } = job.data
   console.log({ name, email, total, type, toRecontact })
   try {
+    const subjects = {
+      '4bands': `${name} - Proposition spectacle`,
+      jazzola: "Hommage à Marcel Azzola"
+
+    }
     await Contact.updateOne(
       { $or: [{ mail: email }, { mail2: email }, { mail3: email }] },
       { sendMailStatus: { date: new Date(), status: 'sending' } }
     )
     await sendMail({
-      subject: `${name} - Proposition spectacle`,
+      subject: subjects[type],
       body: getBody(type),
       to: email.trim(),
-      // subject: `${name} - Proposition Spectacle (${email})`,
-      // to: `delwiv@protonmail.com`,
     })
 
     await Contact.updateOne(
