@@ -2,13 +2,17 @@ version: "3.4"
 
 services:
   mongo:
-    image: 'bitnami/mongodb:latest'
+    image: 'bitnami/mongodb:4.4'
     ports:
-      - "27017:27017"
+      - "${MONGODB_PORT}:27017"
     volumes:
       - /var/data/mongodb
-        #  networks:
-        #    - managr-mongo
+    environment:
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
+
 
   redis:
     image: 'bitnami/redis:latest'
@@ -16,12 +20,3 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - '6379:6379'
-
-        #  mongo-seed:
-        #    build: ./mongo-seed
-        #    depends_on:
-        #      - mongo
-
-
-        #networks: 
-        #managr-mongo:

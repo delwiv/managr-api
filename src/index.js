@@ -5,10 +5,10 @@ import emails from './routes/emails'
 import express from 'express'
 import mongoose from 'mongoose'
 import morgan from 'morgan'
-import { DB_URL, PORT } from './config.json'
+import { MONGODB_DATABASE, MONGODB_HOST, MONGODB_PASSWORD, MONGODB_PORT, MONGODB_USERNAME, PORT } from './config.json'
 
-mongoose.connect(DB_URL, { useNewUrlParser: true }, connectErr => {
-  console.log(connectErr || `connected to ${DB_URL}`)
+mongoose.connect(`mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASE}`, { useNewUrlParser: true }, connectErr => {
+  console.log(connectErr || `MongoDB connected to ${MONGODB_HOST}:${MONGODB_PORT}`)
 })
 
 const app = express()
